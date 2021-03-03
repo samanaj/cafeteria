@@ -1,6 +1,5 @@
 from django.db import models
 
-
 from crum import get_current_user
 #Para los signals
 from django.db.models.signals import post_save, post_delete

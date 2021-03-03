@@ -1,5 +1,6 @@
 from django.db import models
 from apps.bases.models import BaseModel
+from crum import get_current_user
 
 from cafeteria.settings import MEDIA_URL, STATIC_URL
 
