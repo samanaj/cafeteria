@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
  
 router = DefaultRouter()
 router.register('categoria/add', CategoriaViewSet)
+router.register('subcat/add', subCategoriaViewSet)
 
 urlpatterns = [
     path('hello/', HelloView.as_view(), name='hello'),

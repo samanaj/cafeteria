@@ -21,7 +21,6 @@ class Categoria(BaseModel):
         self.descripcion = self.descripcion.upper()  
         super(Categoria, self).save()
 
-
     class Meta:
         verbose_name_plural= "Categorias"
 
@@ -165,7 +164,6 @@ class Oferta(BaseModel):
     precioOferta= models.FloatField(default=0)
     f_inicio = models.DateField()
     f_fin = models.DateField()
-
     
     def __str__(self):
         return '{}'.format(self.descripcion)
@@ -179,7 +177,6 @@ class Oferta(BaseModel):
                 self.u_m = us
         self.descripcion = self.descripcion.upper()  
         super(Oferta, self).save()
-
 
     class Meta:
         verbose_name_plural= "ofertas"

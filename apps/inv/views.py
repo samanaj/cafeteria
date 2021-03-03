@@ -6,14 +6,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 
-from .models import Categoria
-from .serializer import CategoriaSerializer
+from .models import Categoria, SubCategoria
+
+from .serializer import CategoriaSerializer, SubCategoriaSerializer
+
 from rest_framework import viewsets
 
- 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+
+class subCategoriaViewSet(viewsets.ModelViewSet):
+    queryset = SubCategoria.objects.all()
+    serializer_class = SubCategoriaSerializer
+
 
 class HelloView(APIView):
     permission_classes = (IsAuthenticated,)
