@@ -33,7 +33,7 @@ class User(BaseModel2, AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.nombres + ' ' + self.apellidos
     
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None, commit = True):
         us = get_current_user()
         if us is not None:
             if not self.pk:
@@ -41,4 +41,5 @@ class User(BaseModel2, AbstractBaseUser, PermissionsMixin):
             else:
                 self.u_m = us
         super(User, self).save()
-    
+        
+        return User

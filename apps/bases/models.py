@@ -25,3 +25,10 @@ class BaseModel2(models.Model):
 
     class Meta:
         abstract = True
+
+
+class OwnerModel(models.Model):    
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
