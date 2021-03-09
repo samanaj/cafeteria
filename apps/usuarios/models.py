@@ -40,6 +40,5 @@ class User(BaseModel2, AbstractBaseUser, PermissionsMixin):
                 self.u_c = us
             else:
                 self.u_m = us
-        super(User, self).save()
-        
+        super(User, self).save()        
         return User

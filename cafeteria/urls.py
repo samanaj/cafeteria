@@ -24,4 +24,6 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     re_path('inv/', include(('apps.inv.urls', 'inv'), namespace= 'inv')),
     re_path('user/', include(('apps.usuarios.urls', 'usuarios'), namespace= 'user')),
+    #importar routers
+    re_path('', include('apps.usuarios.routers')),
 ]
