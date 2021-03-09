@@ -53,6 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
+
 #gestion de contraseña   
 class ChangePasswordSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
