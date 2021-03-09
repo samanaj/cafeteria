@@ -7,6 +7,11 @@ from django.contrib.auth.models import Group
 
 from .models import User
 
+class GroupSerialiezer(serializers.ModelSerializer):
+    class Meta:
+        model= Group
+        fields = '__all__'
+
 class UserSerializer(serializers.ModelSerializer):    
     class Meta:
         model = User        
@@ -15,7 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
 
            
     def create(self, validated_data):
-        groups_data = groups =  validated_data.pop('groups')
+        groups_data = validated_data.pop('groups')
+        permis_data = validated_data.pop('user_permissions')
         user = User(
             email = validated_data['email'],
             username = validated_data['username'],
@@ -30,13 +36,16 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
                       
         user.save()
+        #permissos
+        user.user_permissions.clear()
+        for p in permis_data:
+            user.user_permissions.add(p)
         #grupos
-        user.groups.clear()        
+        user.groups.clear()
         # user.save_m2m()
-        for g in groups_data:           
+        for g in groups_data:
             user.groups.add(g)
-        #user.groups.set.add(groups)
-
+       
         Token.objects.create(user=user)
         return user
 
@@ -51,7 +60,51 @@ class UserSerializer(serializers.ModelSerializer):
         
         instance.save()
 
+#USER UPDATEA
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = fields = ['username', 'nombres','apellidos', 'genero', 'email', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions']        
 
+    # password = ReadOnlyPasswordHashField()
+
+    # nombres = serializers.CharField()
+    # apellidos = serializers.CharField()
+    # genero = serializers.CharField()
+    # is_staff = serializers.BooleanField()
+    # is_active = serializers.BooleanField()
+    # is_superuser =serializers.BooleanField()
+    # groups = GroupSerialiezer(many=True)
+
+    # user_permissions = serializers.ManyToManyField(to='auth.Permission')
+    
+
+    def update(self, instance, validated_data):
+        # groups_data = validated_data.pop('groups')
+        # permis_data = validated_data.pop('user_permissions')
+        groups_data = validated_data.get('groups', instance.groups)
+        permis_data = validated_data.get('user_permissions', instance.user_permissions)
+       
+        inst = User (
+            nombres = validated_data.get('nombres', instance.nombres),
+            apellidos = validated_data.get('apellidos', instance.apellidos),
+            genero = validated_data.get('genero', instance.genero),
+            email = validated_data.get('email', instance.email),
+            is_staff = validated_data.get('is_staff', instance.is_staff),
+            is_active = validated_data.get('is_active', instance.is_active),
+            is_superuser = validated_data.get('is_superuser', instance.is_superuser),        
+        )
+
+        inst.save()
+        # #user.user_permissions.clear()
+        for p in permis_data:
+            inst.user_permissions.add(p)
+        # #grupos
+        # #user.groups.clear()
+        # # user.save_m2m()
+        for g in groups_data:
+            inst.groups.add(g)       
+        return inst
 
 
 #gestion de contraseña   
@@ -84,9 +137,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
         if validated_data['new_password'] == validated_data['confirm_password'] and instance.check_password(validated_data['old_password']):
             # instance.password = validated_data['new_password'] 
-            print(instance.password)
+            # print(instance.password)
             instance.set_password(validated_data['new_password'])
-            print(instance.password)
+            # print(instance.password)
             instance.save()
             return instance
         return instance

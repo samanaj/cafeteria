@@ -30,7 +30,7 @@ class ChangePasswordView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated,]
 
 class UserUpdateApiView(RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserUpdateSerializer
     queryset = User.objects.all()    
     pagination_class = CustomPagination
     permission_classes = (IsAuthenticated,)
@@ -41,12 +41,33 @@ class UserUpdateApiView(RetrieveUpdateAPIView):
     #     serializer.save()
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+@api_view(['GET', 'PUT','DELETE'])
+def user_detail_api_view(request,pk=None):
+    # queryset
+    user = User.objects.filter(id = pk).first()
+    # validation
+    if user:
+        if request.method == 'GET': 
+            user_serializer = UserUpdateSerializer(user)
+            return Response(user_serializer.data,status = status.HTTP_200_OK)
+        # update
+        elif request.method == 'PUT':
+            user_serializer = UserUpdateSerializer(user,data = request.data) # <<--------------- SE ENVÍA LA INSTANCIA
+            if user_serializer.is_valid():
+                user_serializer.save()
+                return Response(user_serializer.data,status = status.HTTP_200_OK)
+            return Response(user_serializer.errors,status = status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    # def update(self, request, *args, **kwargs):
+    #     serializer = self.serializer_class(data=request.data, partial=True)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 # @api_view(['GET','PUT','DELETE'])
 # def user_detail_api_view(request,pk=None):
