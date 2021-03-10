@@ -1,6 +1,8 @@
 from rest_framework import permissions
 from .apps import UsuariosConfig
 from django.contrib.auth.models import Group
+from rest_framework.permissions import DjangoModelPermissions
+
 
 from rest_framework.exceptions import PermissionDenied
 

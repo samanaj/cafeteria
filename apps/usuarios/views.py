@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.authtoken.models import Token
 
 from .permissions import IsOwner
@@ -12,9 +13,10 @@ from .permissions import IsOwner
 from .pagination import CustomPagination
 from .serializer import *
 from .models import User
-from .permissions import IsOwnerOrReadOnly, IsAuthenticated
+from .permissions import IsAuthenticated
 
-from apps.bases.models import BaseModelPerm
+from apps.bases.permission import BaseModelPerm
+
 # Create your views here.
 
 class UserCreate(ListCreateAPIView):
@@ -52,7 +54,7 @@ class GroupCreate(ListCreateAPIView):
     model = Group
     serializer_class = GrupoSerializer       
     pagination_class = CustomPagination
-    permission_classes = (IsAuthenticated, BaseModelPerm)
+    permission_classes = (DjangoModelPermissions, IsAuthenticated)    
     queryset = Group.objects.all()
     extra_perms_map = {
       'GET': ["can_view_groups"],
