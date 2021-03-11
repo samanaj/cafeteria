@@ -49,7 +49,7 @@ MY_APPS = [
 THIRDS_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
-   
+    'rest_auth',   
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + MY_APPS + THIRDS_APPS

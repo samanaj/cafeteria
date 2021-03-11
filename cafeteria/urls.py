@@ -19,12 +19,13 @@ from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-    #path('api-auth/', include('rest_framework.urls'))
+    # rest_framework token
+    path('api-auth/', include('rest_framework.urls')),
     #simple_ jwt
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     #apps local
+    re_path('login2', include(('apps.bases.urls', 'bases'), namespace= 'panel')),
     re_path('inv/', include(('apps.inv.urls', 'inv'), namespace= 'inv')),
     re_path('user/', include(('apps.usuarios.urls', 'usuarios'), namespace= 'user')),
     #importar routers
