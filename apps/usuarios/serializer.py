@@ -45,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
 #USER UPDATEA
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    # shop = serializers.CharField()
+
     class Meta:
         model = User
         fields = ['id','username', 'password', 'nombres','apellidos', 'genero', 'email', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions']
